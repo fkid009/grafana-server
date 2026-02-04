@@ -1,0 +1,12 @@
+# Environment
+.env
+
+# Data
+grafana/data/
+prometheus/data/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
