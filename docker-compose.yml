@@ -16,33 +16,50 @@ services:
     networks:
       - monitoring
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 128M
 
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
     ports:
       - "9091:9090"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.time=3d'
+      - '--storage.tsdb.retention.size=256MB'
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
       - monitoring
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 192M
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
     container_name: cadvisor
     privileged: true
+    command:
+      - '--housekeeping_interval=30s'
+      - '--docker_only=true'
+      - '--disable_metrics=percpu,sched,tcp,udp,disk,diskIO,hugetlb,referenced_memory,cpu_topology,resctrl'
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro
       - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
-      - /dev/disk/:/dev/disk:ro
-    devices:
-      - /dev/kmsg
     networks:
       - monitoring
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 96M
 
   amd-gpu-exporter:
     build: ./amd-gpu-exporter
@@ -54,6 +71,10 @@ services:
     networks:
       - monitoring
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 32M
 
 networks:
   monitoring:
