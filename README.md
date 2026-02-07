@@ -9,6 +9,7 @@ Docker 컨테이너 및 시스템 리소스 모니터링을 위한 Grafana 스�
 | Grafana | 3001 | 대시보드 시각화 |
 | Prometheus | 9091 | 메트릭 수집/저장 |
 | cAdvisor | - | Docker 컨테이너 메트릭 |
+| Node Exporter | - | 호스트 디스크 메트릭 |
 | AMD GPU Exporter | 9101 | AMD GPU 메트릭 |
 
 ## 빠른 시작
@@ -39,6 +40,7 @@ docker compose up -d
 - CPU 사용량 (시계열 + 도넛 차트 + 게이지)
 - Memory 사용량 (시계열 + 도넛 차트 + 게이지)
 - Network I/O (RX/TX)
+- Disk 사용량 (시계열 + 용량 stat + 게이지)
 - GPU 사용량 (AMD Renoir)
 
 ## 명령어

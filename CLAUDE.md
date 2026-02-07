@@ -27,6 +27,7 @@ grafana-server/
 | Grafana | 3000 | 3001 |
 | Prometheus | 9090 | 9091 |
 | cAdvisor | 8080 | - |
+| Node Exporter | 9100 | - |
 | AMD GPU Exporter | 9101 | 9101 |
 
 ## 주요 파일
@@ -41,8 +42,9 @@ grafana-server/
 - 홈 대시보드: docker.json
 
 ### prometheus/prometheus.yml
-- 스크랩 대상: cadvisor:8080, amd-gpu-exporter:9101
-- 스크랩 간격: 15초
+- 스크랩 대상: cadvisor:8080, node-exporter:9100, amd-gpu-exporter:9101
+- 글로벌 스크랩 간격: 30초
+- node-exporter 스크랩 간격: 60초 (디스크 메트릭은 변화가 느림)
 
 ### amd-gpu-exporter/exporter.py
 - /sys/class/drm/card0/device/에서 메트릭 수집
@@ -53,7 +55,8 @@ grafana-server/
 1. **CPU**: 시계열, 도넛 차트, 총 사용률 게이지
 2. **Memory**: 시계열, 도넛 차트, 총 사용률 게이지
 3. **Network**: RX/TX 시계열
-4. **GPU**: 사용률, VRAM, 온도
+4. **Disk**: 사용률 시계열, 용량 stat (Used/Available/Total), 사용률 게이지
+5. **GPU**: 사용률, VRAM, 온도
 
 ## 명령어
 
