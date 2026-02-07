@@ -19,7 +19,7 @@ services:
     deploy:
       resources:
         limits:
-          memory: 128M
+          memory: 256M
 
   prometheus:
     image: prom/prometheus:latest
@@ -60,6 +60,24 @@ services:
       resources:
         limits:
           memory: 96M
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    command:
+      - '--path.rootfs=/host'
+      - '--collector.disable-defaults'
+      - '--collector.filesystem'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc/.*)($$|/)'
+    volumes:
+      - /:/host:ro,rslave
+    networks:
+      - monitoring
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 32M
 
   amd-gpu-exporter:
     build: ./amd-gpu-exporter
